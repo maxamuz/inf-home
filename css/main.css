@@ -476,6 +476,7 @@ p {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 100px 50px;
+  align-items: start;
 }
 
 .servises-card-item {
@@ -507,6 +508,14 @@ p {
   list-style: none;
   margin: 15px 0;
   padding-right: 30px;
+}
+
+.servises-card-list li.hidden-item {
+  display: none;
+}
+
+.servises-card-button-block .card-button-item.expanded {
+  padding: 5px 15px;
 }
 
 .servises-card-list li {

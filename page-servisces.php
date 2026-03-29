@@ -520,7 +520,7 @@ get_header();
             </div>
             <div class="contacts-button">
                 <a href="#" class="contacts-button-start"><img src="<?php echo get_template_directory_uri() . '/img/gis_route.png' ?>" alt="Иконка маршрута">Начать поездку</a>
-                <a href="#" class="contacts-button-action">Записаться</a>
+                <a href="#about-form" class="contacts-button-action">Записаться</a>
             </div>
         </div>
     </section>

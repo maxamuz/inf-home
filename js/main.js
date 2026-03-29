@@ -92,7 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 /**
  * Mobile menu functionality
  */
@@ -264,4 +263,110 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+});
+
+// Разворачиваем карточки услуг
+
+document.addEventListener("DOMContentLoaded", function () {
+  const serviceCards = document.querySelectorAll(".servises-card-item");
+
+  function collapseCard(card) {
+    const list = card.querySelector(".servises-card-list");
+    const moreButton = card.querySelector(".card-button-item");
+    const visibleItems = parseInt(card.dataset.visibleItems) || 5;
+
+    if (!list || !moreButton) return;
+
+    const listItems = list.querySelectorAll("li");
+
+    for (let i = visibleItems; i < listItems.length; i++) {
+      listItems[i].classList.add("hidden-item");
+    }
+    moreButton.textContent = "Еще";
+    moreButton.classList.remove("expanded"); // Удаляем класс expanded
+    card._isExpanded = false;
+  }
+
+  function expandCard(card) {
+    const list = card.querySelector(".servises-card-list");
+    const moreButton = card.querySelector(".card-button-item");
+    const visibleItems = parseInt(card.dataset.visibleItems) || 5;
+
+    if (!list || !moreButton) return;
+
+    const listItems = list.querySelectorAll("li");
+
+    for (let i = visibleItems; i < listItems.length; i++) {
+      listItems[i].classList.remove("hidden-item");
+    }
+    moreButton.textContent = "Свернуть";
+    moreButton.classList.add("expanded"); // Добавляем класс expanded
+    card._isExpanded = true;
+  }
+
+  function collapseAllCards(exceptCard = null) {
+    serviceCards.forEach((card) => {
+      if (exceptCard !== card && card._isExpanded) {
+        collapseCard(card);
+      }
+    });
+  }
+
+  serviceCards.forEach((card) => {
+    const list = card.querySelector(".servises-card-list");
+    const moreButton = card.querySelector(".card-button-item");
+    const visibleItems = parseInt(card.dataset.visibleItems) || 5;
+
+    if (!list || !moreButton) return;
+
+    const listItems = list.querySelectorAll("li");
+
+    if (listItems.length <= visibleItems) {
+      moreButton.style.display = "none";
+      return;
+    }
+
+    for (let i = visibleItems; i < listItems.length; i++) {
+      listItems[i].classList.add("hidden-item");
+    }
+
+    card._isExpanded = false;
+
+    moreButton.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (card._isExpanded) {
+        collapseCard(card);
+      } else {
+        collapseAllCards(card);
+        expandCard(card);
+      }
+    });
+
+    card.addEventListener("click", function (e) {
+      if (e.target === moreButton || moreButton.contains(e.target)) {
+        return;
+      }
+
+      if (card._isExpanded) {
+        collapseCard(card);
+      } else {
+        collapseAllCards(card);
+        expandCard(card);
+      }
+    });
+  });
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".servises-card-item")) {
+      collapseAllCards();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      collapseAllCards();
+    }
+  });
 });
